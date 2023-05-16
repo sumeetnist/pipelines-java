@@ -3,17 +3,18 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-trigger:
-- main
-
-pool:
-  vmImage: ubuntu-latest
-
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+name: Docker
+on: [push, pull_request]
+jobs:
+  Windows:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: docker version
+      run: docker version
+    - name: docker info
+      run: docker info
+    - name: Pull image
+      run: docker pull mcr.microsoft.com/windows:2009
+    - name: Build image
+      run: docker build -f win.Dockerfile .
